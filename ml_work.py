@@ -13,7 +13,7 @@ target = "Supply_Risk_Flag"
 
 # Prepare feature matrix (X) and target (y)
 X = df[["Delay_Days", "Supplier_Reliability_Score", "Parameter_Change_Magnitude"]]
-y = df[target]
+y = df[target]    
 
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)

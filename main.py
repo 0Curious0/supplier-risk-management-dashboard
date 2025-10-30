@@ -9,6 +9,7 @@ import base64
 import os
 from datetime import datetime, timedelta
 from sklearn.linear_model import LinearRegression # Added for forecast model
+from new_supplier import new_sup
 
 # ------------------------------------
 # Page Setup
@@ -97,7 +98,7 @@ main_col, right_sidebar = st.columns([4, 1])
 
 with right_sidebar:
     st.header("⚙️ Data Settings")
-    num_suppliers = st.number_input("Number of Suppliers", 1, 20, 5)
+    num_suppliers = st.number_input("Number of Suppliers", 1, 1000, 5)
     supplier_prefix = st.text_input("Supplier Name Prefix", "Supplier_")
     num_days = st.slider("Number of Days", 7, 90, 30)
 
@@ -351,28 +352,7 @@ with main_col:
         submitted = st.form_submit_button("✨ Evaluate Risk")
 
     if submitted:
-        base_risk = 0
-        base_risk += min(delay_days * 2, 20)
-        base_risk += (100 - reliability_score) * 0.3
-        base_risk += parameter_change * 0.4
-        if energy_consumption > 2000:
-            base_risk += 10
-        elif energy_consumption > 1000:
-            base_risk += 5
-        risk_score = max(0, min(base_risk, 100))
-
-        if risk_score < 30:
-            risk_level = "🟢 Low Risk"
-            color = "#27ae60"
-            show_balloons = True
-        elif risk_score < 70:
-            risk_level = "🟠 Moderate Risk"
-            color = "#f39c12"
-            show_balloons = False
-        else:
-            risk_level = "🔴 High Risk"
-            color = "#e74c3c"
-            show_balloons = False
+        risk_level, color, show_ballons = new_sup(delay_days, reliability_score, parameter_change)
 
         st.markdown("### 📊 Custom Supplier Risk Result")
         st.markdown(
@@ -387,13 +367,12 @@ with main_col:
                 <p><b>Parameter Change Magnitude:</b> {parameter_change:.1f}%</p>
                 <p><b>Energy Consumption:</b> {energy_consumption:.1f} kWh</p>
                 <hr>
-                <h4 style='color:{color}; font-weight:bold;'>Estimated Risk Score: {risk_score:.1f}%</h4>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        if show_balloons:
+        if show_ballons:
             st.balloons()
 
         st.success("✅ Risk evaluation complete! Use this insight to guide supplier engagement and quality assurance.")

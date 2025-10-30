@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from ml_work import model
+from ml_work import model, scaler
 
 # Example: data for a new supplier
 def new_sup(delay, score, parameter):
@@ -13,13 +13,11 @@ def new_sup(delay, score, parameter):
     }
 
 
-    scaler = StandardScaler()
-
     # Convert to DataFrame to match training structure
     new_supplier_df = pd.DataFrame([new_supplier_data])
 
     # Apply the same scaling used in training
-    new_supplier_scaled = scaler.fit_transform(new_supplier_df)
+    new_supplier_scaled = scaler.transform(new_supplier_df)
 
     # Predict the supply risk
     predicted_class = model.predict(new_supplier_scaled)

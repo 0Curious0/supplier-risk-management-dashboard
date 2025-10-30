@@ -119,6 +119,8 @@ with right_sidebar:
 with main_col:
     np.random.seed(42)
     suppliers = [f"{supplier_prefix}{i+1}" for i in range(num_suppliers)]
+
+    
     dates = pd.date_range(datetime.now() - timedelta(days=num_days), periods=num_days)
 
     data = [
@@ -352,7 +354,7 @@ with main_col:
         submitted = st.form_submit_button("✨ Evaluate Risk")
 
     if submitted:
-        risk_level, color, show_ballons = new_sup(delay_days, reliability_score, parameter_change)
+        risk_level, color, show_ballons = new_sup(delay_days, reliability_score/100, parameter_change/100)
 
         st.markdown("### 📊 Custom Supplier Risk Result")
         st.markdown(

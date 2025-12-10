@@ -22,6 +22,3 @@
 | **Version Control** | Git, GitHub |
 <br>
 
-<b>Team name: Ionizers
-<br>
-<b>Members: Devansh, Avinash, Swastika, Tanay 
